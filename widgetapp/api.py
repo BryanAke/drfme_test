@@ -1,7 +1,7 @@
 from rest_framework_extensions.routers import ExtendedDefaultRouter
 from rest_framework_mongoengine.routers import MongoRouterMixin
 
-from rest_framework_mongoengine.serializers import DocumentSerializer
+from rest_framework_mongoengine.serializers import DocumentSerializer, PolymorphicDocumentSerializer
 from rest_framework_mongoengine.viewsets import ModelViewSet
 
 from rest_framework_extensions.mixins import NestedViewSetMixin, PaginateByMaxMixin
@@ -12,15 +12,13 @@ from models import Widget, SpecialWidget, Thing
 #Serializers
 #######
 
-class WidgetSerializer(DocumentSerializer):
+class WidgetSerializer(PolymorphicDocumentSerializer):
     class Meta:
         model = Widget
-        depth = 1
 
 class SpecialWidgetSerializer(DocumentSerializer):
     class Meta:
         model = SpecialWidget
-        depth = 1
 
 class ThingSerializer(DocumentSerializer):
     class Meta:

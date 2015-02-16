@@ -1,5 +1,5 @@
-from mongoengine import (Document, EmbeddedDocument, StringField, ListField, ReferenceField, DictField,
-                         ValidationError, EmbeddedDocumentField, IntField)
+from mongoengine import (Document, EmbeddedDocument, StringField, ListField, ReferenceField, MapField,
+                         ValidationError, EmbeddedDocumentField, IntField, DynamicField)
 # Create your models here.
 class Widget(Document):
     """
@@ -44,12 +44,28 @@ class Relationship(EmbeddedDocument):
     predicate = StringField()
     object_rel = ReferenceField("Widget")
 
+class SpecialField(DynamicField):
+
+    def __get__(self, instance, owner):
+        if instance is None:
+            # Document class being used rather than a document object
+            return self
+
+        value = instance._data.get(self.name)  # Get value from document instance if available
+
+        #can't have any of that int crap.
+        if isinstance(value, int):
+            return str(value) + " MILLION DOLLARS!"
+        return value
+
 class SpecialWidget(Widget):
     """
     Model that inherits some of Widget's stuff and adds some data.
     """
 
     some_value = IntField()
+
+    dyn_value = SpecialField()
 
     components = ListField(EmbeddedDocumentField("Component"))
 
@@ -73,3 +89,5 @@ class Thing(Document):
 
     name = StringField()
     some_values = EmbeddedDocumentField("ThingProps")
+
+    testmap = MapField(IntField())
