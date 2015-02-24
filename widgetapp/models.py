@@ -1,5 +1,5 @@
 from mongoengine import (Document, EmbeddedDocument, StringField, ListField, ReferenceField, MapField,
-                         ValidationError, EmbeddedDocumentField, IntField, DynamicField)
+                         ValidationError, EmbeddedDocumentField, IntField, DynamicField, DictField)
 # Create your models here.
 class Widget(Document):
     """
@@ -90,4 +90,4 @@ class Thing(Document):
     name = StringField()
     some_values = EmbeddedDocumentField("ThingProps")
 
-    testmap = MapField(IntField())
+    testmap = DictField()
