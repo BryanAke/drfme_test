@@ -2,6 +2,7 @@ from rest_framework_extensions.routers import ExtendedDefaultRouter
 from rest_framework_mongoengine.routers import MongoRouterMixin
 
 from rest_framework_mongoengine.serializers import DocumentSerializer, PolymorphicDocumentSerializer
+from rest_framework_mongoengine.fields import ReferenceField
 from rest_framework_mongoengine.viewsets import ModelViewSet
 
 from rest_framework_extensions.mixins import NestedViewSetMixin, PaginateByMaxMixin
@@ -13,8 +14,15 @@ from models import Widget, SpecialWidget, Thing
 #######
 
 class WidgetSerializer(PolymorphicDocumentSerializer):
+
     class Meta:
         model = Widget
+        extra_kwargs = {
+            'parent': {
+                'required': False
+            }
+
+        }
 
 class SpecialWidgetSerializer(DocumentSerializer):
     class Meta:
