@@ -1,5 +1,5 @@
 from mongoengine import (Document, EmbeddedDocument, StringField, ListField, ReferenceField, MapField,
-                         ValidationError, EmbeddedDocumentField, IntField, DynamicField, DictField)
+                         ValidationError, EmbeddedDocumentField, IntField, DynamicField, DictField, FloatField)
 # Create your models here.
 class Widget(Document):
     """
@@ -91,3 +91,42 @@ class Thing(Document):
     some_values = EmbeddedDocumentField("ThingProps")
 
     testmap = DictField()
+
+
+class Vehicle(Document):
+    """
+    Vehicle or something
+    """
+
+    meta = {
+        'allow_inheritance': True
+    }
+
+
+    name = StringField()
+    weight = IntField()
+
+    manufacturer = StringField()
+
+class Car(Vehicle):
+    mpg = IntField()
+
+class Mileage(EmbeddedDocument):
+    loaded = IntField()
+    unloaded = IntField()
+
+    meta = {
+        'allow_inheritance': True
+    }
+
+class StupidMileage(Mileage):
+    loaded = ReferenceField(Widget)
+    unloaded = StringField()
+    helium = IntField()
+
+class Truck(Vehicle):
+    mpg = EmbeddedDocumentField(Mileage)
+    manufacturer = ReferenceField(Widget)
+
+class Semi(Truck):
+    volume = IntField()

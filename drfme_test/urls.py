@@ -1,12 +1,16 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from widgetapp.api import ExtendedMongoRouter, WidgetViewSet, SpecialWidgetViewSet, ThingViewSet
+from widgetapp.api import ExtendedMongoRouter, WidgetViewSet, SpecialWidgetViewSet, ThingViewSet, VehicleViewSet, TruckViewSet, CarViewSet
 
 router = ExtendedMongoRouter()
 router.register(r'widgets', WidgetViewSet)
 router.register(r'specialwidgets', SpecialWidgetViewSet)
 router.register(r'things', ThingViewSet)
+
+router.register(r'vehicles', VehicleViewSet)
+router.register(r'trucks', TruckViewSet)
+router.register(r'cars', CarViewSet)
 
 urlpatterns = patterns('',
     # Examples:
