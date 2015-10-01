@@ -1,7 +1,7 @@
 from rest_framework_extensions.routers import ExtendedDefaultRouter
 from rest_framework_mongoengine.routers import MongoRouterMixin
 
-from rest_framework_mongoengine.serializers import DocumentSerializer, PolymorphicDocumentSerializer
+from rest_framework_mongoengine.serializers import DocumentSerializer, PolymorphicDocumentSerializer, ChainableDocumentSerializer
 from rest_framework_mongoengine.fields import ReferenceField, HyperlinkedDocumentIdentityField
 from rest_framework.fields import CharField
 from rest_framework_mongoengine.viewsets import ModelViewSet
@@ -33,23 +33,34 @@ class ThingSerializer(DocumentSerializer):
     class Meta:
         model = Thing
 
-class VehicleSerializer(PolymorphicDocumentSerializer):
+class VehicleSerializer(ChainableDocumentSerializer):
     _cls = CharField(source='_class_name', required=False, allow_null=True)
     href = HyperlinkedDocumentIdentityField()
     class Meta:
         model = Vehicle
 
-class TruckSerializer(DocumentSerializer):
+class TruckSerializer(ChainableDocumentSerializer):
+    _cls = CharField(source='_class_name', required=False, allow_null=True)
+    href = HyperlinkedDocumentIdentityField()
     class Meta:
         model = Truck
 
-class SemiSerializer(DocumentSerializer):
+class SemiSerializer(ChainableDocumentSerializer):
+    _cls = CharField(source='_class_name', required=False, allow_null=True)
+    href = HyperlinkedDocumentIdentityField()
     class Meta:
         model = Semi
 
-class CarSerializer(DocumentSerializer):
+class CarSerializer(ChainableDocumentSerializer):
+    _cls = CharField(source='_class_name', required=False, allow_null=True)
+    href = HyperlinkedDocumentIdentityField()
     class Meta:
         model = Car
+
+VehicleSerializer.register_serializer(TruckSerializer)
+VehicleSerializer.register_serializer(CarSerializer)
+TruckSerializer.register_serializer(SemiSerializer)
+
 #######
 #ViewSets
 #######

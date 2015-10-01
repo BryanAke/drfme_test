@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 
-from widgetapp.api import ExtendedMongoRouter, WidgetViewSet, SpecialWidgetViewSet, ThingViewSet, VehicleViewSet, TruckViewSet, CarViewSet
+from widgetapp.api import ExtendedMongoRouter, WidgetViewSet, SpecialWidgetViewSet, ThingViewSet, VehicleViewSet, TruckViewSet, CarViewSet, SemiViewSet
 
 router = ExtendedMongoRouter()
 router.register(r'widgets', WidgetViewSet)
@@ -10,6 +10,7 @@ router.register(r'things', ThingViewSet)
 
 router.register(r'vehicles', VehicleViewSet)
 router.register(r'trucks', TruckViewSet)
+router.register(r'sermis', SemiViewSet)
 router.register(r'cars', CarViewSet)
 
 urlpatterns = patterns('',
